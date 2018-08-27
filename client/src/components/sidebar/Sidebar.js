@@ -6,6 +6,7 @@ class Sidebar extends Component {
 
   render() {
     let { users } = this.props;
+    // console.log(users);
     return (
       <aside id='sidebar'>
         <h2>Users</h2>

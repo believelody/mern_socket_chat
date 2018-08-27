@@ -1,20 +1,22 @@
-const webSocket = require('ws');
-const wss = new webSocket.Server({ port: 8989 });
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8989 });
 
 const users = [];
 
 const broadcast = (data, ws) => {
-  ws.clients.forEach(client => {
-    console.log(data);
-    if (client.readyState === webSocket.OPEN && client !== ws) {
+  wss.clients.forEach(client => {
+    // console.log(data);
+    if (client.readyState === WebSocket.OPEN && client !== ws) {
       client.send(JSON.stringify(data))
     }
   });
 }
 
 wss.on('connection', (ws) => {
+  // console.log('ws', ws);
   let index;
   ws.on('message', message => {
+    // console.log(message);
     const data = JSON.parse(message);
     switch (data.type) {
       case 'ADD_USER':
@@ -31,10 +33,11 @@ wss.on('connection', (ws) => {
         }, ws);
         break;
       case 'ADD_MESSAGE':
+        // console.log("On server add message: ", data);
         broadcast({
           type: 'ADD_MESSAGE',
           payload: {
-            message: data.message,
+            message: data.payload.message,
             author: data.author
           }
         }, ws);
@@ -48,7 +51,7 @@ wss.on('connection', (ws) => {
     users.splice(index, 1);
     broadcast({
       type: 'USERS_LIST',
-      users
+      payload: users
     }, ws);
   })
 })

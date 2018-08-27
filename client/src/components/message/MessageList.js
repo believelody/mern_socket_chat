@@ -7,7 +7,7 @@ class MessageList extends Component {
 
   render() {
     let { messages } = this.props;
-    console.log(messages);
+    // console.log(messages);
     return (
       <section id='message-list'>
         <h2>Message List</h2>

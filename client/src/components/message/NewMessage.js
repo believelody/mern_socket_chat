@@ -12,9 +12,10 @@ class NewMessage extends Component {
 
   handlePress = e => {
     if (e.key === 'Enter') {
-      console.log(this.state.message);
-      this.props.addMessage(this.state.message, 'Me');
-      this.setState({ message: ''});
+      if (this.state.message !== '') {
+        this.props.addMessage(this.state.message, 'Me');
+        this.setState({ message: ''});
+      }
     }
   }
 
